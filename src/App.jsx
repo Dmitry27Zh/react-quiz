@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import './App.css'
 
 const questions = [
@@ -18,17 +19,20 @@ const questions = [
   },
 ]
 
-function Game() {
+function Game({ step }) {
+  const question = questions[step]
+  const progress = Math.floor((step / questions.length) * 100)
+
   return (
     <>
       <div className="progress">
-        <div style={{ width: '50%' }} className="progress__inner"></div>
+        <div style={{ width: progress }} className="progress__inner"></div>
       </div>
-      <h1>Что такое useState?</h1>
+      <h1>{question.title}</h1>
       <ul>
-        <li>Это функция для хранения данных компонента</li>
-        <li>Это глобальный стейт</li>
-        <li>Это когда на ты никому не нужен</li>
+        {question.variants.map((variant) => (
+          <li key={crypto.randomUUID()}>{variant}</li>
+        ))}
       </ul>
     </>
   )
@@ -45,9 +49,11 @@ function Result() {
 }
 
 function App() {
+  const [step, setStep] = useState(0)
+
   return (
     <div className="App">
-      <Game />
+      <Game step={step} />
     </div>
   )
 }
