@@ -14,24 +14,26 @@ const questions = [
   },
   {
     title: 'Что такое JSX?',
-    variants: ['Это простой HTML', 'Это функция', 'Это тот же HTML, но с возможностью выполнять JS-код'],
+    variants: ['Это простой HTML', 'Это функция', 'Это тот же HTML, но c возможностью выполнять JS-код'],
     correct: 2,
   },
 ]
 
-function Game({ step }) {
+function Game({ step, onNext }) {
   const question = questions[step]
   const progress = Math.floor((step / questions.length) * 100)
 
   return (
     <>
       <div className="progress">
-        <div style={{ width: progress }} className="progress__inner"></div>
+        <div style={{ width: `${progress}%` }} className="progress__inner"></div>
       </div>
       <h1>{question.title}</h1>
       <ul>
         {question.variants.map((variant) => (
-          <li key={crypto.randomUUID()}>{variant}</li>
+          <li key={crypto.randomUUID()} onClick={onNext}>
+            {variant}
+          </li>
         ))}
       </ul>
     </>
@@ -50,10 +52,15 @@ function Result() {
 
 function App() {
   const [step, setStep] = useState(0)
+  const isFinish = step === questions.length
+  const handleNextStep = () => {
+    setStep(step + 1)
+  }
 
   return (
     <div className="App">
-      <Game step={step} />
+      {!isFinish && <Game step={step} onNext={handleNextStep} />}
+      {isFinish && <Result />}
     </div>
   )
 }
