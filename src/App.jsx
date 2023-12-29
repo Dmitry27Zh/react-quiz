@@ -46,7 +46,9 @@ function Result({ correctCount }) {
       <h2>
         Вы отгадали {correctCount} ответ(-a) из {questions.length}
       </h2>
-      <button>Попробовать снова</button>
+      <a href="/">
+        <button>Попробовать снова</button>
+      </a>
     </div>
   )
 }
