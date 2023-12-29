@@ -19,8 +19,7 @@ const questions = [
   },
 ]
 
-function Game({ step, onNext }) {
-  const question = questions[step]
+function Game({ step, question, onNext }) {
   const progress = Math.floor((step / questions.length) * 100)
 
   return (
@@ -52,6 +51,7 @@ function Result() {
 
 function App() {
   const [step, setStep] = useState(0)
+  const question = questions[step]
   const isFinish = step === questions.length
   const handleNextStep = () => {
     setStep(step + 1)
@@ -59,7 +59,7 @@ function App() {
 
   return (
     <div className="App">
-      {!isFinish && <Game step={step} onNext={handleNextStep} />}
+      {!isFinish && <Game step={step} question={question} onNext={handleNextStep} />}
       {isFinish && <Result />}
     </div>
   )
