@@ -29,8 +29,8 @@ function Game({ step, question, onNext }) {
       </div>
       <h1>{question.title}</h1>
       <ul>
-        {question.variants.map((variant) => (
-          <li key={crypto.randomUUID()} onClick={onNext}>
+        {question.variants.map((variant, index) => (
+          <li key={crypto.randomUUID()} onClick={() => onNext(index)}>
             {variant}
           </li>
         ))}
@@ -39,11 +39,13 @@ function Game({ step, question, onNext }) {
   )
 }
 
-function Result() {
+function Result({ correctCount }) {
   return (
     <div className="result">
       <img src="https://cdn-icons-png.flaticon.com/512/2278/2278992.png" alt="" />
-      <h2>Вы отгадали 3 ответа из 10</h2>
+      <h2>
+        Вы отгадали {correctCount} ответ(-a) из {questions.length}
+      </h2>
       <button>Попробовать снова</button>
     </div>
   )
@@ -51,16 +53,21 @@ function Result() {
 
 function App() {
   const [step, setStep] = useState(0)
+  const [correctCount, setCorrectCount] = useState(0)
   const question = questions[step]
   const isFinish = step === questions.length
-  const handleNextStep = () => {
+  const handleNextStep = (answer) => {
     setStep(step + 1)
+
+    if (answer === question.correct) {
+      setCorrectCount(correctCount + 1)
+    }
   }
 
   return (
     <div className="App">
       {!isFinish && <Game step={step} question={question} onNext={handleNextStep} />}
-      {isFinish && <Result />}
+      {isFinish && <Result correctCount={correctCount} />}
     </div>
   )
 }
